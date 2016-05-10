@@ -1,16 +1,17 @@
 import json
 from bson.objectid import ObjectId
+from bson.dbref import DBRef
 from pymongo import ReturnDocument
 
 
 class MongoQuery(object):
     """
-    Query handles all the querying done by the MongoDB Library. 
+    Query handles all the querying done by the MongoDB Library.
     """
 
     def get_mongodb_databases(self):
         """
-        Returns a list of all of the databases currently on the MongoDB 
+        Returns a list of all of the databases currently on the MongoDB
         server you are connected to.
 
         Usage is:
@@ -78,7 +79,7 @@ class MongoQuery(object):
 
     def validate_mongodb_collection(self, dbName, dbCollName):
         """
-        Returns a string of validation info. Raises CollectionInvalid if 
+        Returns a string of validation info. Raises CollectionInvalid if
         validation fails.
 
         Usage is:
@@ -116,10 +117,10 @@ class MongoQuery(object):
 
     def save_mongodb_records(self, dbName, dbCollName, recordJSON):
         """
-        If to_save already has an "_id" then an update() (upsert) operation is 
-        performed and any existing document with that "_id" is overwritten. 
-        Otherwise an insert() operation is performed. In this case if manipulate 
-        is True an "_id" will be added to to_save and this method returns the 
+        If to_save already has an "_id" then an update() (upsert) operation is
+        performed and any existing document with that "_id" is overwritten.
+        Otherwise an insert() operation is performed. In this case if manipulate
+        is True an "_id" will be added to to_save and this method returns the
         "_id" of the saved document.
 
         | ${allResults} | Save MongoDB Records | DBName | CollectionName | JSON |
@@ -353,6 +354,9 @@ class MongoQuery(object):
         recordJSON = json.loads(recordJSON)
         if '_id' in recordJSON:
             recordJSON['_id'] = ObjectId(recordJSON['_id'])
+        for key, value in recordJSON.iteritems():
+            if '$ref' in value:
+                key = DBRef(collection = value['$ref'], id = value['$id'])
         try:
             db = self._dbconnection['%s' % (dbName,)]
         except TypeError:
