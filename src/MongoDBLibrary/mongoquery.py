@@ -313,9 +313,8 @@ class MongoQuery(object):
         dbName = str(dbName)
         dbCollName = str(dbCollName)
         recordJSON = json.loads(recordJSON)
-        print "HUGO"
         for key, value in recordJSON.iteritems():
-            if '$ref' in value:
+            if isinstance(value, dict) and '$ref' in value:
                 recordJSON[key] = DBRef(collection = value['$ref'], id = value['$id'])
         criteria = dict(recordJSON)
         try:
