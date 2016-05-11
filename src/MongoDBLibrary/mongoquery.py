@@ -315,7 +315,7 @@ class MongoQuery(object):
         recordJSON = json.loads(recordJSON)
         for key, value in recordJSON.iteritems():
             if '$ref' in value:
-                key = DBRef(collection = value['$ref'], id = value['$id'])
+                recordJSON[key] = DBRef(collection = value['$ref'], id = value['$id'])
         criteria = dict(recordJSON)
         try:
             db = self._dbconnection['%s' % (dbName,)]
