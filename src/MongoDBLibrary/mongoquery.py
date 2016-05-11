@@ -312,7 +312,11 @@ class MongoQuery(object):
     def _retrieve_mongodb_records(self, dbName, dbCollName, recordJSON, fields=[], returnDocuments=False):
         dbName = str(dbName)
         dbCollName = str(dbCollName)
-        criteria = dict(json.loads(recordJSON))
+        recordJSON = json.loads(recordJSON)
+        for key, value in recordJSON.iteritems():
+            if '$ref' in value:
+                key = DBRef(collection = value['$ref'], id = value['$id'])
+        criteria = dict(recordJSON)
         try:
             db = self._dbconnection['%s' % (dbName,)]
         except TypeError:
@@ -354,9 +358,6 @@ class MongoQuery(object):
         recordJSON = json.loads(recordJSON)
         if '_id' in recordJSON:
             recordJSON['_id'] = ObjectId(recordJSON['_id'])
-        for key, value in recordJSON.iteritems():
-            if '$ref' in value:
-                key = DBRef(collection = value['$ref'], id = value['$id'])
         try:
             db = self._dbconnection['%s' % (dbName,)]
         except TypeError:
