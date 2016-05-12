@@ -358,6 +358,9 @@ class MongoQuery(object):
         recordJSON = json.loads(recordJSON)
         if '_id' in recordJSON:
             recordJSON['_id'] = ObjectId(recordJSON['_id'])
+        for key, value in recordJSON.iteritems():
+            if isinstance(value, dict) and '$ref' in value:
+                recordJSON[key] = DBRef(collection = value['$ref'], id = value['$id'])
         try:
             db = self._dbconnection['%s' % (dbName,)]
         except TypeError:
