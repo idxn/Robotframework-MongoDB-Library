@@ -310,7 +310,7 @@ class MongoQuery(object):
         return self._retrieve_mongodb_records(dbName, dbCollName, recordJSON, data, returnDocuments)
 
     def _retrieve_mongodb_records(self, dbName, dbCollName, recordJSON, fields=[], returnDocuments=False): 
-	dbName = str(dbName)
+        dbName = str(dbName)
         dbCollName = str(dbCollName)
         recordJSON = loads(recordJSON)
         for key, value in recordJSON.iteritems():
