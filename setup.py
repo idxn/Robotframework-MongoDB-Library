@@ -10,6 +10,10 @@ sys.path.insert(0, os.path.join('src','MongoDBLibrary'))
 
 from version import VERSION
 
+requirements = [
+    'pymongo'
+]
+
 def main():
     setup(name         = 'robotframework-mongodblibrary',
           version      = VERSION,
@@ -18,7 +22,8 @@ def main():
           author_email = 'jerry@cyverse.org',
           url          = 'https://github.com/iPlantCollaborativeOpenSource/Robotframework-MongoDB-Library',
           package_dir  = { '' : 'src'},
-          packages     = ['MongoDBLibrary']
+          packages     = ['MongoDBLibrary'],
+          install_requires=requirements
           )
         
 
