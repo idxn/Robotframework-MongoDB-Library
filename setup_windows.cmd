@@ -1,6 +1,6 @@
 cls
 @echo off
-pip uninstall -y robotframework-appiumlibrary
+pip uninstall -y robotframework-mongolibrary
 python setup.py install
 IF %ERRORLEVEL% NEQ 0 (
 	goto error
