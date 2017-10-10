@@ -334,7 +334,7 @@ class MongoQuery(object):
                 response = '%s%s' % (response, d.items())
             return response
 
-    def remove_mongodb_records(self, dbName, dbCollName, recordJSON):
+    def remove_mongodb_records(self, dbName, dbCollName, recordJSON, convertToObjId=True):
         """
         Remove some of the records from a given MongoDB database collection
         based on the JSON entered.
@@ -353,10 +353,14 @@ class MongoQuery(object):
         | ${output} | Retrieve All MongoDB Records | ${MDBDB} | ${MDBColl} |
         | Should Not Contain | ${output} | 'timestamp', 1 |
         """
+        if str(convertToObjId).lower() in ('false'):
+            convertToObjId = False
+        else:
+            convertToObjId = True
         dbName = str(dbName)
         dbCollName = str(dbCollName)
         recordJSON = loads(recordJSON)
-        if '_id' in recordJSON:
+        if '_id' in recordJSON and convertToObjId:
             recordJSON['_id'] = ObjectId(recordJSON['_id'])
         for key, value in recordJSON.iteritems():
             if isinstance(value, dict) and '$ref' in value:
