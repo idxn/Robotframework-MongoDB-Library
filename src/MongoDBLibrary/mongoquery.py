@@ -338,7 +338,7 @@ class MongoQuery(object):
         """
         Remove some of the records from a given MongoDB database collection
         based on the JSON entered.
-
+        ``convertToObjId`` if __id provided in recordJSON need to be converted to ObjectId, default is ``True``.
         The JSON fed in must be double quoted but when doing a comparison, it
         has to be single quoted.  See Usage below
 
