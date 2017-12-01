@@ -3,7 +3,7 @@
 
 """Setup script for Robot's MongoDB Library distributions"""
 
-from distutils.core import setup
+from setuptools import setup
 
 import sys, os
 sys.path.insert(0, os.path.join('src','MongoDBLibrary'))
@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.join('src','MongoDBLibrary'))
 from version import VERSION
 
 requirements = [
-    'pymongo'
+    'pymongo>=3.5.1',
 ]
 
 def main():
